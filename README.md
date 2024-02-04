@@ -1,0 +1,1 @@
+# Homework-10-GenTech-25.01.2024
