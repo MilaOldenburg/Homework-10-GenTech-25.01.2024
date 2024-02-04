@@ -1,0 +1,48 @@
+ 1 уровень сложности: Ссылка на создание БД: https://github.com/NelliEfr/hr_data/blob/master/script.sql
+
+
+use hr;
+
+-- 1.Найти количество сотрудников в каждом департаменте. Вывести departmentid и employeescnt
+
+SELECT department_id, COUNT(*) AS employeescnt
+FROM employees
+GROUP BY department_id;
+
+-- 2.Найти количество сотрудников в каждом департаменте. Вывести departmentname и employeescnt
+
+SELECT department_name, COUNT(*) AS employeescnt
+FROM employees
+JOIN departments ON employees.department_id = departments.department_id
+GROUP BY department_name;
+
+-- 3.Найти количество сотрудников у каждого менеджера. Вывести managerid и employeescnt
+
+SELECT manager_id, COUNT(*) AS employeescnt
+FROM employees
+GROUP BY manager_id;
+
+-- 4.Найти количество сотрудников у каждого менеджера. Вывести firstname,  lastname и employees_cnt
+
+SELECT first_name, last_name, COUNT(*) AS employees_cnt
+FROM employees
+GROUP BY manager_id, first_name, last_name;
+
+-- 5.Найти максимальную зарплату в каждом департаменте. Вывести departmentid и maxsalary
+
+SELECT department_id, MAX(salary) AS maxsalary
+FROM employees
+GROUP BY department_id;
+
+-- 6.Найти сотрудников, у которых наибольшая зарплата в их департаменте
+
+SELECT employee_id, first_name, last_name, department_id, salary
+FROM employees e1
+WHERE salary = (SELECT MAX(salary) FROM employees e2 WHERE e1.department_id = e2.department_id);
+
+-- 7.Найти департаменты, в которых больше 10 сотрудников. Вывести department_name
+
+SELECT department_name
+FROM departments
+WHERE department_id IN (SELECT department_id FROM employees GROUP BY department_id HAVING COUNT(*) > 10);
+
